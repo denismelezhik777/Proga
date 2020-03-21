@@ -1,0 +1,501 @@
+import socket
+import struct
+import cv2
+import numpy as np
+import cv2 as cv
+import math
+import threading
+
+# cap = cv2.VideoCapture('udpsrc port=5116 ! decodebin ! videoconvert ! appsink sync=false')
+cap = cv2.VideoCapture(0)
+print(9)
+
+
+def video_processing():
+    while True:
+        ret, com.framer = cap.read()
+
+
+def processing_jostik():
+    com.Jostik_info()
+
+
+def processing_display():
+    print(999)
+    # t2.start()
+    com.key_processing()
+    com.display(Outpac.return_())
+
+
+def processing_data():
+    while True:
+        if com.flag_udp_data:
+            sock.sendto(InPac.input_(), ('169.254.101.39', 5115))
+
+            data, addr = sock.recvfrom(1024)
+            Outpac.input_(data)
+            # print(1)
+        else:
+            com.init_udp_data()
+        # print(com.flag_Joystick)
+
+
+class Сommunication:
+    def __init__(self):
+        import pygame
+        import pygame as pg
+        global pygame, pg
+
+        pg.font.init()
+        pygame.init()
+        pygame.display.init()
+        pygame.joystick.init()
+
+        self.f1 = pygame.font.Font(None, 24)
+
+        self.flag_udp_data = False
+        self.flag_udp_video = False
+        self.flag_Joystick = False
+
+        self.flag_tab = False
+        self.flag_Q = False
+        self.K_1 = False
+        self.K_2 = False
+        self.K_3 = False
+        self.K_4 = False
+        self.K_5 = False
+        self.K_0 = False
+        self.K_P = False
+        self.K_O = False
+        self.K_I = 0
+
+        self.x = 0  # 0
+        self.y = 0  # 1
+        self.w = 0  # 2
+        self.z = 0  # 3
+        self.l = 0  # 4
+
+        self.but_1_g2 = False
+        self.but_2_g2 = False
+        self.but_3_g2 = False
+        self.but_4_g2 = False
+        self.but_5_g2 = False
+        self.but_6_g2 = False
+
+        self.but_1_g1 = False
+        self.but_2_g1 = False
+        self.but_3_g1 = False
+        self.but_4_g1 = False
+        self.but_10 = False
+        self.but_11 = False
+        self.os_data = [self.x, self.y, self.w, self.z, self.l]
+        self.rotarycamera = (0, 0)
+        self.bool_buttons = [self.but_1_g2, self.but_2_g2, self.but_3_g2,
+                             self.but_4_g2, self.but_5_g2, self.but_6_g2,
+                             self.but_1_g1, self.but_2_g1, self.but_3_g1,
+                                self.but_4_g1, self.but_10, self.but_11]
+
+        self.crange = [40, 50, 50, 150, 150, 225]
+        self.wheel = 0
+        self.os_selfgovernment = [0, 0, 0, 0, 0]
+
+        ret, self.framer = cap.read()
+
+    def init_udp_data(self):
+        global sock
+        try:
+            UDP_IP = "169.254.101.40"
+            UDP_PORT = 5115
+            sock = socket.socket(socket.AF_INET,  # Internet
+                                 socket.SOCK_DGRAM)  # UDP
+            sock.bind((UDP_IP, UDP_PORT))
+            self.flag_udp_data = True
+            return True
+        except:
+            return False
+
+    def init_udp_video(self):
+        global cap
+        # flag_dop = False
+        # if flag_dop:
+        #     cap = cv2.VideoCapture(0)
+        # else:
+        #     print(3)
+        #     cap = cv2.VideoCapture('udpsrc port=5116 ! decodebin ! videoconvert ! appsink')
+        #     print(3)
+
+    def init_Joystick(self):
+        # print(pygame.joystick.get_count())
+        if pygame.joystick.get_count():
+            pygame.joystick.Joystick(0).init()
+            self.flag_Joystick = True
+            return True
+        else:
+            self.flag_Joystick = False
+            return False
+
+    def Jostik_info(self):
+        #  self.JoyName = pygame.joystick.Joystick(0).get_name()
+        # JoyAx = pygame.joystick.Joystick(0).get_numaxes()
+        # Joybutton = pygame.joystick.Joystick(0).get_numbuttons()
+        # Joynumhats = pygame.joystick.Joystick(0).get_numhats()
+        self.w = pygame.joystick.Joystick(0).get_axis(2)
+        if self.w == -3.0517578125e-05:
+            self.w = 0.0
+        self.w = int(self.w * 100)
+        if self.w == 99:
+            self.w = 100
+        # if self.w <= 0:
+        #     self.w +=
+
+        self.l = pygame.joystick.Joystick(0).get_axis(4)
+        if self.l == -3.0517578125e-05:
+            self.l = 0.0
+        self.l = int(self.l * 100)
+        if self.l == 99:
+            self.l = 100
+
+        self.x = pygame.joystick.Joystick(0).get_axis(0)
+        if self.x == -3.0517578125e-05:
+            self.x = 0.0
+        self.x = int(self.x * 100)
+        if self.x == 99:
+            self.x = 100
+
+        self.y = pygame.joystick.Joystick(0).get_axis(1)
+        if self.y == -3.0517578125e-05:
+            self.y = 0.0
+        self.y = int(self.y * 100)
+        if self.y == 99:
+            self.y = 100
+
+        self.z = pygame.joystick.Joystick(0).get_axis(3)
+        if self.z == -3.0517578125e-05:
+            self.z = 0.0
+        self.z = int(self.z * 100)
+        if self.z == 99:
+            self.z = 100
+
+        self.but_1_g2 = bool(pygame.joystick.Joystick(0).get_button(4))
+        self.but_2_g2 = bool(pygame.joystick.Joystick(0).get_button(5))
+        self.but_3_g2 = bool(pygame.joystick.Joystick(0).get_button(6))
+        self.but_4_g2 = bool(pygame.joystick.Joystick(0).get_button(7))
+        self.but_5_g2 = bool(pygame.joystick.Joystick(0).get_button(8))
+        self.but_6_g2 = bool(pygame.joystick.Joystick(0).get_button(9))
+        # !!
+        self.but_1_g1 = bool(pygame.joystick.Joystick(0).get_button(0))
+        self.but_2_g1 = bool(pygame.joystick.Joystick(0).get_button(1))
+        self.but_3_g1 = bool(pygame.joystick.Joystick(0).get_button(2))
+        self.but_4_g1 = bool(pygame.joystick.Joystick(0).get_button(3))
+        self.rotarycamera = pygame.joystick.Joystick(0).get_hat(0)
+        # !!
+        self.but_10 = bool(pygame.joystick.Joystick(0).get_button(10))
+        self.but_11 = bool(pygame.joystick.Joystick(0).get_button(11))
+
+    def display(self, data):
+        size = 1280, 920
+        self.win = pg.display.set_mode([1280, 720])
+        pg.display.set_caption('Джостик')
+        pygame.event.pump()
+        self.win.fill([255, 255, 255])
+
+        framer = self.framer
+        if framer is None:
+            print("Skipping fragmented frame")
+            ret, framer = cap.read()
+        # cv2.imshow('', frame)
+
+        frame = cv2.resize(framer, size)
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = np.rot90(frame)
+        frame = pygame.surfarray.make_surface(frame)
+        self.win.blit(frame, (0, -100))
+
+        self.data_return(data, framer)
+        pg.display.update()
+
+    def data_return(self, data, frame):
+        if self.flag_Q:
+            f1 = self.f1
+            os2_1_g2_text = f1.render(f'ось w: {self.w}', 1, (180, 0, 0))
+            os4_ = f1.render(f'ось t: {self.l}', 1, (180, 0, 0))
+            but_1_g2_text = f1.render(f'Скорость 1 кнопка: {self.but_1_g2}', 1, (180, 0, 0))
+            but_2_g2_text = f1.render(f'Скорость 2 кнопка: {self.but_2_g2}', 1, (180, 0, 0))
+            but_3_g2_text = f1.render(f'Скорость 3 кнопка: {self.but_3_g2}', 1, (180, 0, 0))
+            but_4_g2_text = f1.render(f'Скорость 4 кнопка: {self.but_4_g2}', 1, (180, 0, 0))
+            but_5_g2_text = f1.render(f'Скорость 5 кнопка: {self.but_5_g2}', 1, (180, 0, 0))
+            but_6_g2_text = f1.render(f'Скорость 6 кнопка: {self.but_6_g2}', 1, (180, 0, 0))
+
+            os0_g1_text = f1.render(f'x ось: {self.x}', 1, (180, 0, 0))
+            os1_g1_text = f1.render(f'y ось: {self.y}', 1, (180, 0, 0))
+            os3_g1_text = f1.render(f'z ось: {self.z}', 1, (180, 0, 0))
+            but_1_g1_text = f1.render(f'Управление 1 кнопка: {self.but_1_g1}', 1, (180, 0, 0))
+            but_2_g1_text = f1.render(f'Управление 2 кнопка: {self.but_2_g1}', 1, (180, 0, 0))
+            but_3_g1_text = f1.render(f'Управление 3 кнопка: {self.but_3_g1}', 1, (180, 0, 0))
+            but_4_g1_text = f1.render(f'Управление 4 кнопка: {self.but_4_g1}', 1, (180, 0, 0))
+            rotarycamera = f1.render(f'rotarycamera: {self.rotarycamera}', 1, (180, 0, 0))
+
+            but_10_text = f1.render(f'Доп. кнопка 1: {self.but_10}', 1, (180, 0, 0))
+            but_11_text = f1.render(f'Доп. кнопка 2: {self.but_11}', 1, (180, 0, 0))
+
+            self.win.blit(os2_1_g2_text, (10, 50))
+            self.win.blit(os4_, (10, 75))
+
+            self.win.blit(but_1_g2_text, (10, 100))
+            self.win.blit(but_2_g2_text, (10, 125))
+            self.win.blit(but_3_g2_text, (10, 150))
+            self.win.blit(but_4_g2_text, (10, 175))
+            self.win.blit(but_5_g2_text, (10, 200))
+            self.win.blit(but_6_g2_text, (10, 225))
+            # !!
+            self.win.blit(os0_g1_text, (300, 50))
+            self.win.blit(os1_g1_text, (300, 75))
+            self.win.blit(os3_g1_text, (300, 100))
+
+            self.win.blit(but_1_g1_text, (300, 125))
+            self.win.blit(but_2_g1_text, (300, 150))
+            self.win.blit(but_3_g1_text, (300, 175))
+            self.win.blit(but_4_g1_text, (300, 200))
+            self.win.blit(rotarycamera, (300, 225))
+            # !!
+            self.win.blit(but_10_text, (300, 400))
+            self.win.blit(but_11_text, (300, 425))
+
+            yaw = f1.render(f'Yaw: {int(data[0])}', 1, (180, 0, 0))
+            self.win.blit(yaw, (600, 100))
+
+            depth = f1.render(f'Roll: {int(data[1])}', 1, (180, 0, 0))
+            self.win.blit(depth, (600, 125))
+
+            roll = f1.render(f'Pitch: {int(data[2])}', 1, (180, 0, 0))
+            self.win.blit(roll, (600, 150))
+
+            pitch = f1.render(f'Depth: {int(data[3])}', 1, (180, 0, 0))
+            self.win.blit(pitch, (600, 175))
+
+        if self.flag_tab:
+            if self.K_1:
+                status = cv2.imwrite('gluing/WWW1.jpg', frame)
+                self.K_1 = not(self.K_1)
+            if self.K_2:
+                status = cv2.imwrite('gluing/WWW2.jpg', frame)
+                self.K_2 = not(self.K_2)
+            if self.K_3:
+                status = cv2.imwrite('gluing/WWW3.jpg', frame)
+                self.K_3 = not(self.K_3)
+            if self.K_4:
+                status = cv2.imwrite('gluing/WWW4.jpg', frame)
+                self.K_4 = not(self.K_4)
+            if self.K_5:
+                status = cv2.imwrite('gluing/WWW5.jpg', frame)
+                self.K_5 = not(self.K_5)
+
+            if self.K_0:
+                status = cv2.imwrite('map/WWW.jpg', frame)
+                self.K_0 = not(self.K_0)
+
+        if self.K_P:
+            print(self.img_angl(frame))
+        else:
+            cv2.destroyWindow('09')
+            cv2.destroyWindow('contours')
+
+        if self.K_O:
+            print(self.slider())
+        else:
+            cv2.destroyWindow('settings')
+
+        if self.K_I:
+            pass
+
+    def return_os(self):
+        self.os_data = [self.x, self.y, self.w, self.z, self.l]
+        return self.os_data
+
+    def return_buttons(self):
+        self.bool_buttons = [self.but_1_g2, self.but_2_g2, self.but_3_g2,
+                             self.but_4_g2, self.but_5_g2, self.but_6_g2,
+                             self.but_1_g1, self.but_2_g1, self.but_3_g1,
+                             self.but_4_g1, self.but_10, self.but_11]
+        return self.bool_buttons
+
+    def return_rotarycamera(self):
+        return self.rotarycamera
+
+    def return_os_selfgovernment(self):
+        self.os_selfgovernment = [0, 0, 100, self.wheel, 0]
+
+    def key_processing(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_TAB]:
+            self.flag_tab = not(self.flag_tab)
+        if keys[pg.K_q]:
+            self.flag_Q = not (self.flag_Q)
+            print(self.flag_Q )
+        if keys[pg.K_1]:
+            self.K_1 = not (self.K_1)
+        if keys[pg.K_2]:
+            self.K_2 = not (self.K_2)
+        if keys[pg.K_3]:
+            self.K_3 = not (self.K_3)
+        if keys[pg.K_4]:
+            self.K_4 = not (self.K_4)
+        if keys[pg.K_5]:
+            self.K_5 = not (self.K_5)
+        if keys[pg.K_0]:
+            self.K_0 = not (self.K_0)
+        if keys[pg.K_p]:
+            self.K_P = not (self.K_P)
+        if keys[pg.K_o]:
+            self.slider_creature()
+            self.K_O = not (self.K_O)
+        if keys[pg.K_i]:
+            self.K_I = 0 if self.K_I else 1
+
+    def img_angl(self, img):
+        cv2.waitKey(1)
+        # fn = 'lines.jpg'
+        # img = cv.imread(fn)
+
+        sum_angle = 0
+        sum_area = 0
+        quantity = 0
+
+        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
+        hsv_min = np.array((self.crange[0], self.crange[1], self.crange[2]), np.uint8)
+        hsv_max = np.array((self.crange[3], self.crange[4], self.crange[5]), np.uint8)
+        color_yellow = (255, 255, 255)
+
+        mask = cv.inRange(hsv, hsv_min, hsv_max)
+        cv2.imshow('09', mask)
+        contours, _ = cv.findContours(mask, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+        for cnt in contours:
+            rect = cv.minAreaRect(cnt)
+            box = cv.boxPoints(rect)
+            box = np.int0(box)
+            box = np.int0(box)
+            center = (int(rect[0][0]), int(rect[0][1]))
+            area = int(rect[1][0] * rect[1][1])
+            edge1 = np.int0((box[1][0] - box[0][0], box[1][1] - box[0][1]))
+            edge2 = np.int0((box[2][0] - box[1][0], box[2][1] - box[1][1]))
+            usedEdge = edge1
+            if cv.norm(edge2) > cv.norm(edge1):
+                usedEdge = edge2
+            reference = (1, 0)
+            angle = 180.0 / math.pi * math.acos(
+                (reference[0] * usedEdge[0] + reference[1] * usedEdge[1]) / (cv.norm(reference) * cv.norm(usedEdge)))
+
+            if 25000 > area > 5000:
+                if isinstance(angle, float):
+                    if 90 - 45 < angle < 90 + 45:
+                        sum_angle += angle
+                        quantity += 1
+                cv2.drawContours(img, [box], 0, (0, 0, 0), 2)
+                cv2.circle(img, center, 5, color_yellow, 2)
+                cv2.putText(img, "%d" % int(angle), (center[0] + 20, center[1] - 20),
+                           cv2.FONT_HERSHEY_SIMPLEX, 1, color_yellow, 2)
+        cv2.imshow('contours', img)
+        if quantity:
+            self.wheel = 90 - sum_angle // quantity
+            return 90 - sum_angle // quantity
+        return False
+
+    def slider(self):
+         h1 = cv2.getTrackbarPos('h1', 'settings')  # h1
+         s1 = cv2.getTrackbarPos('s1', 'settings')  # s1
+         v1 = cv2.getTrackbarPos('v1', 'settings')  # v1
+         h2 = cv2.getTrackbarPos('h2', 'settings')  # h2
+         s2 = cv2.getTrackbarPos('s2', 'settings')  # s2
+         v2 = cv2.getTrackbarPos('v2', 'settings')  # v2
+
+         if h1 > 0:
+             self.crange[0] = h1
+             self.crange[1] = s1
+             self.crange[2] = v1
+             self.crange[3] = h2
+             self.crange[4] = s2
+             self.crange[5] = v2
+         else:
+             print(1111)
+
+         return self.crange
+
+    def slider_creature(self):
+        def nothing(*arg):
+            pass
+        # # создаем 6 бегунков для настройки начального и конечного цвета фильтра
+        cv2.namedWindow("settings")
+        cv2.createTrackbar('h1', 'settings', 0, 255, nothing)
+        cv2.createTrackbar('s1', 'settings', 0, 255, nothing)
+        cv2.createTrackbar('v1', 'settings', 0, 255, nothing)
+        cv2.createTrackbar('h2', 'settings', 255, 255, nothing)
+        cv2.createTrackbar('s2', 'settings', 255, 255, nothing)
+        cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
+
+
+class InputPacket:
+    def __init__(self):
+        self.osi = [0, 0, 0, 0]
+
+    def input_(self):
+        if com.K_I:
+            self.osi = com.return_os()
+            self.W1_data = str.encode(chr(abs(self.osi[0] + 100)))
+            self.W1_data += str.encode(chr(abs(self.osi[1] + 100)))
+            self.W1_data += str.encode(chr(self.osi[2] + 100))
+            self.W1_data += str.encode(chr(self.osi[3] + 100))
+            self.W1_data += str.encode(chr(com.K_I))
+        else:
+            self.osi = com.return_os()
+            self.W1_data = str.encode(chr(abs(self.osi[0] + 100)))
+            self.W1_data += str.encode(chr(abs(self.osi[1] + 100)))
+            self.W1_data += str.encode(chr(self.osi[2] + 100))
+            self.W1_data += str.encode(chr(self.osi[3] + 100))
+            self.W1_data += str.encode(chr(com.K_I))
+        return self.W1_data
+
+
+class OutputPacket:
+    def __init__(self):
+        self.W2_data = [0, 0, 0, 0]
+
+    def return_(self):
+        return self.W2_data
+
+    def input_(self, data_r):
+        self.W2_data = struct.unpack('<ffff', data_r)
+
+
+com = Сommunication()
+InPac = InputPacket()
+Outpac = OutputPacket()
+running = True
+# com.init_udp_video()
+com.init_Joystick()
+print(com.init_udp_data())
+t1 = threading.Thread(target=video_processing, args=())
+t2 = threading.Thread(target=processing_jostik, args=())
+t3 = threading.Thread(target=processing_display(), args=())
+t4 = threading.Thread(target=processing_data, args=())
+# t1.start()
+t3.start()
+# print(111)
+# t4.start()
+# t1.join()
+# t3.join()
+# t4.join()
+# while running:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#     if com.flag_Joystick:
+#         t2.start()
+#     else:
+#         com.init_Joystick()
+#     # com.display(Outpac.return_())
+
+# cv2.destroyAllWindows()
+# cap.release()
+# while True:
+#     processing_display()
